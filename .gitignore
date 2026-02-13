@@ -1,0 +1,13 @@
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.env
+myenv/
+.DS_Store
+docker-compose.yml
+
+inventory.xlsx
+sales.xlsx
+DSS_Report.xlsx
+hrm_data/*.xlsx

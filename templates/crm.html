@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CRM - Customer Feedback</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<!-- Buttons at the top like dashboard -->
+<div class="forms-row">
+    <a href="/">
+        <button>Dashboard</button>
+    </a>
+    <a href="/hr_management">
+        <button>HR Management</button>
+    </a>
+    <a href="/crm">
+        <button>CRM</button>
+    </a>
+</div>
+
+<h1>Customer Feedback</h1>
+
+<!-- Submit Feedback Form -->
+<div class="forms-row">
+    <div class="form-box">
+        <h2>Submit Feedback</h2>
+        <form method="POST">
+            <label>Customer Name:</label>
+            <input type="text" name="customer_name" required>
+
+            <label>Feedback:</label>
+            <textarea name="feedback" required></textarea>
+
+            <label>Rating (1-5):</label>
+            <input type="number" name="rating" min="1" max="5" step="0.1" required>
+
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+</div>
+
+<!-- Average Rating -->
+<div class="full-width">
+    <h2>Average Rating: {{ average_rating }}</h2>
+</div>
+
+<!-- All Customer Reviews -->
+<div class="full-width">
+    <h2>All Customer Reviews</h2>
+    <table>
+        <tr>
+            <th>Customer Name</th>
+            <th>Rating</th>
+            <th>Date</th>
+            <th>Feedback</th>
+        </tr>
+        {% for review in reviews %}
+        <tr>
+            <td>{{ review.Customer_Name }}</td>
+            <td>{{ review.Rating }}</td>
+            <td>{{ review.Date }}</td>
+            <td>{{ review.Feedback }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+
+<!-- Flash messages -->
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    <ul>
+    {% for category, message in messages %}
+      <li class="alert">{{ message }}</li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
+
+</body>
+</html>
+

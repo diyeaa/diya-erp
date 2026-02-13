@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Grocery Store Inventory DSS Dashboard</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<a href="/hr_management">
+    <button>HR Management</button>
+</a>
+<a href="/crm">
+    <button>CRM</button>
+</a>
+<h1>Grocery Store Inventory DSS Dashboard</h1>
+
+<!-- ===== FORMS ROW ===== -->
+<div class="forms-row">
+
+    <!-- Sell Product -->
+    <div class="form-box">
+        <h2>Sell Product</h2>
+        <form id="sell-form" method="POST" action="/sell">
+            <label>Product ID:</label>
+            <input type="number" name="product_id" required>
+            <label>Quantity Sold:</label>
+            <input type="number" name="quantity" required>
+            <button type="submit">Sell</button>
+        </form>
+    </div>
+
+    <!-- Restock Product -->
+    <div class="form-box">
+        <h2>Restock Product</h2>
+        <form id="restock-form" method="POST" action="/restock">
+            <label>Product ID:</label>
+            <input type="number" name="product_id" required>
+            <label>Quantity Added:</label>
+            <input type="number" name="quantity" required>
+            <button type="submit">Restock</button>
+        </form>
+    </div>
+
+    <!-- Add New Product -->
+    <div class="form-box">
+        <h2>Add New Product</h2>
+        <form id="add-product-form" method="POST" action="/add_product">
+            <label>Product Name:</label>
+            <input type="text" name="product_name" required>
+            <label>Category:</label>
+            <input type="text" name="category" required>
+            <label>Initial Stock:</label>
+            <input type="number" name="stock" required>
+            <label>Threshold:</label>
+            <input type="number" name="threshold" required>
+            <button type="submit">Add Product</button>
+        </form>
+    </div>
+
+</div>
+
+<!-- ===== CURRENT INVENTORY FULL WIDTH ===== -->
+<div class="inventory full-width">
+    <h2>Current Inventory</h2>
+    <table>
+        <tr>
+            <th>Product ID</th>
+            <th>Product Name</th>
+            <th>Category</th>
+            <th>Current Stock</th>
+            <th>Threshold</th>
+        </tr>
+        {% for item in inventory %}
+        <tr {% if item.Current_Stock <= item.Threshold %} class="alert" {% endif %}>
+            <td>{{ item.Product_ID }}</td>
+            <td>{{ item.Product_Name }}</td>
+            <td>{{ item.Category }}</td>
+            <td>{{ item.Current_Stock }}</td>
+            <td>{{ item.Threshold }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+
+<!-- ===== GRID BELOW ===== -->
+<div class="grid-container">
+
+    <!-- Low Stock Alerts -->
+    <div class="grid-item low-stock">
+        <h2>⚠️ Low Stock Alerts</h2>
+        <table>
+            <tr>
+                <th>Product ID</th>
+                <th>Product Name</th>
+                <th>Stock</th>
+                <th>Threshold</th>
+            </tr>
+            {% for item in alerts %}
+            <tr class="alert">
+                <td>{{ item.Product_ID }}</td>
+                <td>{{ item.Product_Name }}</td>
+                <td>{{ item.Current_Stock }}</td>
+                <td>{{ item.Threshold }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+    <!-- Product Classification -->
+    <div class="grid-item classification">
+        <h2>Product Classification</h2>
+        <table>
+            <tr>
+                <th>Product Name</th>
+                <th>Category</th>
+            </tr>
+            {% for product, category in classification.items() %}
+            <tr>
+                <td>{{ product }}</td>
+                <td>{{ category }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+    <!-- DSS Report Export -->
+    <div class="grid-item export">
+        <h2>DSS Report</h2>
+        <form action="{{ url_for('export_dss') }}" method="get">
+            <button type="submit">Export DSS Report</button>
+        </form>
+    </div>
+
+    <!-- Most Demanded Product -->
+    <div class="grid-item center-card">
+        <h2>Most Demanded Product</h2>
+        {% if most_demanded %}
+        <p><strong>{{ most_demanded }}</strong></p>
+        <p>Units Sold: <strong>{{ max_sales }}</strong></p>
+        {% else %}
+        <p>No sales data available.</p>
+        {% endif %}
+    </div>
+
+</div>
+
+</body>
+</html>
+
