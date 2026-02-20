@@ -15,7 +15,9 @@ Frontend: HTML, CSS (Jinja templating)
 Containerization: Docker
 Version Control: Git + GitHub
 Deployment Ready: Runs via Docker container
+## 📂 Project Structure
 
+```
 diya-erp/
 │
 ├── app.py
@@ -31,6 +33,7 @@ diya-erp/
 │
 └── static/
     └── style.css
+```
 
 ⚙️ Features
 Modular routing architecture
